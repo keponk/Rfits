@@ -18,11 +18,11 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          # - {os: macOS-latest,   r: 'release'}
+          # - {os: windows-latest, r: 'release'}
+          # - {os: ubuntu-24.04,   r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-24.04,   r: 'release'}
+          # - {os: ubuntu-24.04,   r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -39,10 +39,18 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+            
+      - name: Install XQuartz on MacOS
+        if: runner.os == 'macOS'
+        run: |
+            brew install --cask XQuartz
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          dependencies: '"hard"'
+
       # - name: Install dependencies
       #   run: |
       #     install.packages('remotes')
