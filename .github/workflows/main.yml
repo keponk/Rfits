@@ -54,6 +54,7 @@ jobs:
             any::testthat
             any::knitr
             any::rmarkdown
+            any::asgr/Rwcs
           needs: check
 
       # - name: Install dependencies
